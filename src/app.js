@@ -5,6 +5,9 @@ const logger = require('morgan');
 const helmet = require('helmet');
 
 const indexRouter = require('./routes/index');
+const userRouter = require('./routes/users');
+const orderRouter = require('./routes/orders');
+const itemRouter = require('./routes/items');
 
 const errorHandler = require('./middleware/errorHandler');
 
@@ -17,6 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/users', userRouter);
+app.use('/orders', orderRouter);
+app.use('/items', itemRouter);
+
+// run powershell as admin
+// Set - ExecutionPolicy RemoteSigned - Scope CurrentUser
+// express new app --view=ejs
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
