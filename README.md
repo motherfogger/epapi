@@ -1,50 +1,55 @@
 # epapi
-express + postgres + api setup
+expressJS + postgres + api setup
 
 
 ### tech includes
 expressJS 
-postgreSQL (node-postgres)
-jwt (session)
-api (json)
+<br>
+postgreSQL [node-postgres](https://node-postgres.com/)
+<br>
+[jwt](https://github.com/auth0/node-jsonwebtoken)
+<br>
+REST API (json)
 
 
 ## Running in development
 
-1. clone the repo or setup your way to epapi-stack
+Clone the repo or setup your way to epapi-stack
 
    ```bash
     git clone https://github.com/motherfogger/epapi.git
    ```
+---
 
-2. Install
+Install
     ```bash
-        cd epapi
-        npm install
+    cd epapi
+    npm install
     ```
 
-3. Setup .env file and Run
+Setup .env file and Run
 
 ```bash
-    npm run dev
+npm run dev
 ```
 
-
-
-
-
+---
 
 ## Running in production
 
-```
+```bash
 npm start
 ```
 
 Runs on localhost:3000 by default but can be configured using the `PORT` environment variable.
 
-### Running tests
 
-```
+---
+
+
+## Running tests
+
+```bash
 npm test
 
 # Watch repo
@@ -52,9 +57,8 @@ npm run test:watch
 ```
 
 ### Linting
-```
-npm run lint
 
-# fix issues
+```bash
+npm run lint
 npm run lint:fix
 ```
