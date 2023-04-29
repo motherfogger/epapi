@@ -11,7 +11,15 @@ const client = new Client({
     port: process.env.DB_PORT,
 })
 
-
+// test client connection, if err, console.log err.stack else console.log connected
+client.connect((err) => {
+    if (err) {
+        console.log(err.stack)
+        client.end()
+    } else {
+        console.log('INFO: database connected')
+    }
+})
 
 module.exports = client;
 

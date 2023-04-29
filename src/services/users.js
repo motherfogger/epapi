@@ -1,12 +1,8 @@
 
 const client = require('../database');
 
-
-
-module.exports.getUsers = async (limit = 100, offset = 0, sort = "ASC", order_by = "lastname", filter = "lastname",  search="") => {
-    // get users, set limit, offset, sort, order, filter, fields, search
-
-    client.connect();
+module.exports.getUsers = async (limit = 100, offset = 0, sort = "ASC", order_by = "lastname", filter_column = "lastname",  search="") => {
+    // get users, set limit, offset, sort, order, filter_column, fields, search
     // only put search if it is not empty
     if (search != "") {
         let users = await client.query(
@@ -14,7 +10,7 @@ module.exports.getUsers = async (limit = 100, offset = 0, sort = "ASC", order_by
         WHERE '$1' LIKE '%$2%' 
         ORDER BY '$3', $4
         LIMIT $5
-        OFFSET $6`, [filter, search, order_by, sort, limit, offset]);
+        OFFSET $6`, [filter_column, search, order_by, sort, limit, offset]);
         return users.rows;
     }
     else {
@@ -24,7 +20,7 @@ module.exports.getUsers = async (limit = 100, offset = 0, sort = "ASC", order_by
         // `SELECT * FROM users
         // ORDER BY '$3' $4
         // LIMIT $5
-        // OFFSET $6`, [filter, search, order_by, sort, limit, offset]);
+        // OFFSET $6`, [filter_column, search, order_by, sort, limit, offset]);
 
         console.log(typeof users.rows);
         console.log(users.rows);
@@ -34,22 +30,41 @@ module.exports.getUsers = async (limit = 100, offset = 0, sort = "ASC", order_by
 
 
 module.exports.getUser = async (id) => {
-    let user = await client.query('SELECT * FROM users WHERE id = $1', [id]);
+    let user = await client.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [id]);
 
-    return user;
+    return user.rows;
 
 };
 
 module.exports.createUser = async (user) => {
-    let newUser = await client.query('INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *', [user.name, user.email]);
+    client.query('BEGIN');  //BEGIN a transaction
+    let newUser = await client.query('INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *', [user.name, user.email], (err, result) => {
+        if (err) {
+            //if there was an error postgres has already & automatically rolled back the transaction
+            console.log("ERROR: Failed to create new user");
+        }
+        else {
+            client.query('COMMIT');  //COMMIT transaction if there was no error
+        }
+    });
 
     return newUser;
 
 };
 
 module.exports.updateUser = async (id, user) => {
-    let updatedUser = await client.query('UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING *', [user.name, user.email, id]);
-
+    
+    client.query('BEGIN');  //BEGIN a transaction
+    let updatedUser = await client.query('UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING *', [user.name, user.email, id], (err, result) => {
+        if (err) {
+            //if there was an error postgres has already & automatically rolled back the transaction
+            console.log("ERROR: Failed to update user");
+        }
+        else {
+            client.query('COMMIT');  //COMMIT transaction if there was no error
+        }
+    });
+    
     return updatedUser;
 
 };

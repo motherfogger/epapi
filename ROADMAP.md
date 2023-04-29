@@ -1,0 +1,22 @@
+### APRIL 2023
+- users services
+- login authentication
+- email authentication
+- 2fa authentication (at least email)
+- users search
+- users analytics
+- email notification queue
+- users notification queue
+- 
+-
+- 
+-
+- 
+-
+- 
+-
+- 
+-
+- 
+-
+### MAY 2023

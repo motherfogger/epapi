@@ -78,8 +78,10 @@ const createUsersTablePromise = new Promise((resolve, reject) => {
         ('Bob', 'Smith', 'bobsmith@gmail.com')`, (err, res) => {
         if (err) {
             console.log("insert data error", err.stack)
+            client.end() 
         } else {
             console.log("insert data successfully")
+            client.end()
         }
     }
     );

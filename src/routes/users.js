@@ -1,41 +1,28 @@
 const express = require('express');
 const router = express.Router();
+var sanitize = require('../tools/sanitize');
 
 const userService = require('../services').users;
 
-
-
 router.get("/find", async (req, res) => {
-  // set up a query limit to 100 
-  let limit = req.query.limit || 100;
-  // set up a query offset to 0
-  let offset = req.query.offset || 0;
-  // set up a query sort to id
-  let sort = req.query.sort || 'id';
-  // set up a query order to asc
-  let order = req.query.order || 'asc';
-  // set up a query filter to empty string
-  let filter = req.query.filter || '';
-  // set up a query fields to empty string
-  let fields = req.query.fields || '';
-  // set up a query fields to empty string
-  let search = req.query.search || '';
-  // set up a query fields to empty string
 
+  let limit = sanitize.number(req.query.limit) || 100;
+  let offset = sanitize.number(req.query.offset) || 0;
+  let sort = sanitize.string(req.query.sort) || 'id';
+  let order = sanitize.string(req.query.order) || 'asc';
+  let filter = sanitize.string(req.query.filter) || '';
+  let search = sanitize.string(req.query.search) || '';
 
-
-  let users = await userService.getUsers(limit, offset, sort, order, filter, fields, search);
+  let users = await userService.getUsers(limit, offset, sort, order, filter, search);
   res.json(users);
 
   
 });
 
-router.get("/:id", (req, res) => {
-  let users = [
-    { id: 1, name: 'John Doe', email: 'johndoe@example.com' },
-    { id: 2, name: 'Jane Doe', email: 'janedoe@example.com' },
-    { id: 3, name: 'Bob Smith', email: 'bobsmith@example.com' }
-  ];
+router.get("/:id", async (req, res) => {
+
+  let id = sanitize.uuid(req.params.id);
+  let users = await userService.getUser(id);
   res.json(users);
 });
 
