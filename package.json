@@ -4,6 +4,7 @@
   "scripts": {
     "start": "NODE_ENV=production node ./src/bin/www",
     "dev": "NODE_ENV=development nodemon ./src/bin/www",
+    "seed": "NODE_ENV=development node ./src/database/seed",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "lint": "eslint .",
@@ -11,10 +12,12 @@
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
+    "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "http-errors": "^1.8.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.10.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

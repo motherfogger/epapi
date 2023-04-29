@@ -27,10 +27,18 @@ Install
     npm install
     ```
 
-Setup .env file and Run
+Setup .env file (copy from .env.sample) and Run
 
 ```bash
 npm run dev
+```
+
+---
+
+Run database seed (optional if starting development to have dummy users)
+
+```bash
+npm run seed
 ```
 
 ---

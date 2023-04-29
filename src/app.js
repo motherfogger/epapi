@@ -3,6 +3,8 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
+// use dotenv to read .env vars into Node
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
