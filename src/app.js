@@ -26,10 +26,6 @@ app.use('/users', userRouter);
 app.use('/orders', orderRouter);
 app.use('/items', itemRouter);
 
-// run powershell as admin
-// Set - ExecutionPolicy RemoteSigned - Scope CurrentUser
-// express new app --view=ejs
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError.NotFound());

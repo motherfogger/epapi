@@ -37,14 +37,17 @@ module.exports.getUser = async (id) => {
 };
 
 module.exports.createUser = async (user) => {
+    const { v4: uuidv4 } = require('uuid');
+    let user_id = uuidv4();
     client.query('BEGIN');  //BEGIN a transaction
-    let newUser = await client.query('INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *', [user.name, user.email], (err, result) => {
+    let newUser = await client.query('INSERT INTO users (id, name, email) VALUES ($1, $2, $3, $4) RETURNING *', [user_id, user.name, user.email, password], (err, result) => {
         if (err) {
             //if there was an error postgres has already & automatically rolled back the transaction
             console.log("ERROR: Failed to create new user");
         }
         else {
-            client.query('COMMIT');  //COMMIT transaction if there was no error
+            //COMMIT transaction if there was no error
+            client.query('COMMIT');  
         }
     });
 

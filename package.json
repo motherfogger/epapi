@@ -5,6 +5,7 @@
     "start": "NODE_ENV=production node ./src/bin/www",
     "dev": "NODE_ENV=development nodemon ./src/bin/www",
     "seed": "NODE_ENV=development node ./src/database/seed",
+    "create_admin": "NODE_ENV=development node ./src/database/create_admin",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "lint": "eslint .",
@@ -19,6 +20,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.10.0",
     "sqlstring": "^2.3.3",
+    "uuid": "^9.0.0",
     "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
