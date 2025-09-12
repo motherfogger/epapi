@@ -2,10 +2,9 @@
   "name": "epapi-stack",
   "version": "0.0.1",
   "scripts": {
-    "start": "NODE_ENV=production node ./src/bin/www",
-    "dev": "NODE_ENV=development nodemon ./src/bin/www",
-    "seed": "NODE_ENV=development node ./src/database/seed",
-    "create_admin": "NODE_ENV=development node ./src/database/create_admin",
+    "start": "node ./src/bin/www",
+    "dev": "nodemon ./src/bin/www",
+    "seed": "node ./src/database/seed",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "lint": "eslint .",

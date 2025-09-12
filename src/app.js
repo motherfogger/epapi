@@ -8,8 +8,7 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
-const orderRouter = require('./routes/orders');
-const itemRouter = require('./routes/items');
+const blogRouter = require('./routes/blogs');
 
 const errorHandler = require('./middleware/errorHandler');
 
@@ -23,8 +22,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
-app.use('/orders', orderRouter);
-app.use('/items', itemRouter);
+app.use('/blogs', blogRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

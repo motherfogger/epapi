@@ -18,13 +18,12 @@ const client = new Client({
 const createUsersTablePromise = new Promise((resolve, reject) => {
   // create users table with uuid as primary key
   client.query(
-    `CREATE TABLE users ( 
-        sid SERIAL,
+    `CREATE TABLE users (
         id UUID PRIMARY KEY,
         firstname VARCHAR(255) NOT NULL,
         lastname VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
-        password VARCHAR(50) NOT NULL,
+        password VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
     (err, res) => {
       if (err) {
@@ -36,10 +35,10 @@ const createUsersTablePromise = new Promise((resolve, reject) => {
   );
   client.query(
     `CREATE UNLOGGED TABLE blog (
-        sid SERIAL,
         id UUID PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
+        author_id UUID REFERENCES users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
     (err, res) => {
@@ -98,21 +97,19 @@ const createUsersTablePromise = new Promise((resolve, reject) => {
 });
 
 client.connect();
-// check users table if existing, create if not existing
-client.query('SELECT * FROM users', (err, res) => {
+// check users table if existing, proceed to createUsersTablePromise
+
+client.query("SELECT to_regclass('public.users')", (err, res) => {
   if (err) {
-    console.log('ERROR: users table does not exist');
-    // close connection
+    console.log('ERROR: check table error');
     client.end();
-    // create users table if not existing
-    createUsersTablePromise.then(() => {
-      // close connection
-      client.end();
-    });
   } else {
-    // log that the users table exists
-    console.log('INFO: users table exists');
-    // close connection
-    client.end();
+    if (res.rows[0].to_regclass === null) {
+      console.log('users table does not exist, creating...');
+      createUsersTablePromise;
+    } else {
+      console.log('users table already exists');
+      client.end();
+    }
   }
 });
